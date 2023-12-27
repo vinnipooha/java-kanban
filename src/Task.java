@@ -2,20 +2,17 @@ import java.util.Objects;
 
 public class Task {
 
-    private int id;
-    private String name;
-    private String description;
-    private Status status;
+    protected int id;
+    protected String name;
+    protected String description;
+    protected Status status;
+    protected static int count = 0;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public Task(String name, String description, Status status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
+        this.id = generateId();
+        this.status = Status.NEW;
     }
 
     public Task(int id, String name, String description, Status status) {
@@ -29,6 +26,9 @@ public class Task {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+    private Integer generateId() {
+        return ++count;
     }
 
     public String getName() {

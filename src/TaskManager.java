@@ -5,7 +5,6 @@ public class TaskManager {
     protected HashMap<Integer, Task> tasks;
     protected HashMap<Integer, Epic> epics;
     protected HashMap<Integer, SubTask> subTasks;
-    protected int id = 0;
 
     public TaskManager() {
         this.tasks = new HashMap<>();
@@ -13,55 +12,42 @@ public class TaskManager {
         this.subTasks = new HashMap<>();
     }
 
-
-    private int generateId() {
-        return ++id;
-    }
-
     public Task createTask(Task task) {
-        task.setId(generateId());
         tasks.put(task.getId(), task);
         return task;
     }
 
     public Epic createEpic(Epic epic) {
-        epic.setId(generateId());
         epics.put(epic.getId(), epic);
         epic.setStatus(calculateStatus(epic));
         return epic;
     }
 
     public SubTask createSubTask(SubTask subTask) {
-        subTask.setId(generateId());
         subTasks.put(subTask.getId(), subTask);
         int epicId = subTask.getEpicId();
         Epic epicForUpdate = epics.get(epicId);
-        ArrayList<Integer> subTasksByEpic = epicForUpdate.getSubTasks();
-        subTasksByEpic.add(subTask.getId());
+        epicForUpdate.addSubTask(subTask.getId());
         epicForUpdate.setStatus(calculateStatus(epicForUpdate));
         return subTask;
     }
 
     public ArrayList<Task> getAllTasks() {
-
         return new ArrayList<>(tasks.values());
     }
 
     public ArrayList<Epic> getAllEpics() {
-
         return new ArrayList<>(epics.values());
     }
 
     public ArrayList<SubTask> getAllSubTasks() {
-
         return new ArrayList<>(subTasks.values());
     }
 
     public void printList(ArrayList list) {
-        for (Object o: list) {
+        for (Object o : list) {
             System.out.println(o);
         }
-
     }
 
     public Task getTaskById(int taskId) {
@@ -128,7 +114,7 @@ public class TaskManager {
     }
 
     public void deleteTaskById(int id) {
-       tasks.remove(id);
+        tasks.remove(id);
     }
 
     public void deleteEpicById(int id) {
@@ -159,7 +145,7 @@ public class TaskManager {
 
     public void deleteAllSubTasks() {
         subTasks.clear();
-        for (Epic epic: epics.values()) {
+        for (Epic epic : epics.values()) {
             epic.removeAllSubTasks();
             epic.setStatus(calculateStatus(epic));
         }
