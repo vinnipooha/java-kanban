@@ -11,7 +11,6 @@ public class Task {
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.id = generateId();
         this.status = Status.NEW;
     }
 
@@ -26,9 +25,6 @@ public class Task {
         this.id = id;
         this.name = name;
         this.description = description;
-    }
-    private Integer generateId() {
-        return ++count;
     }
 
     public String getName() {

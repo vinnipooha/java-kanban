@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class SubTask extends Task{
     private int epicId;
     public SubTask(String name, String description, int epicId) {
@@ -22,4 +24,14 @@ public class SubTask extends Task{
         return (getId() + ", \' " + getName() +"\' (эпик " +epicId + "), описание: \'" +
                 getDescription() + "\', статус: \'"+ getStatus() + "\'");
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        SubTask subTask = (SubTask) object;
+        return epicId == subTask.epicId;
+    }
+
 }
