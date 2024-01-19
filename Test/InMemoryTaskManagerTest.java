@@ -1,3 +1,9 @@
+import manager.Managers;
+import manager.TaskManager;
+import model.Epic;
+import model.Status;
+import model.SubTask;
+import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,11 +26,11 @@ class InMemoryTaskManagerTest {
         int epicId = epic.getId();
         SubTask epicTest =  new SubTask(epicId,"Epic1", "descr1", Status.NEW, epicId);
         taskManager.updateSubTask(epicTest);
-        assertNull(taskManager.getSubTaskById(epicId), "Epic нельзя добавить в самого себя в виде подзадачи");
+        assertNull(taskManager.getSubTaskById(epicId), "Model.Epic нельзя добавить в самого себя в виде подзадачи");
     }
     @Test
     public void canNotAddSubTaskAsItsEpic() {
-        Epic epic = taskManager.createEpic(new Epic("Epic", "descr"));
+        Epic epic = taskManager.createEpic(new Epic("Model.Epic", "descr"));
         SubTask subTask = taskManager.createSubTask(new SubTask("ST1", "STdescr", epic.getId()));
         int subTaskId = subTask.getId();
         SubTask subTaskTest = new SubTask(subTaskId, "ST", "STdescr", Status.NEW , subTaskId);
@@ -34,7 +40,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void shouldCreateNewTaskAndSearchById() {
-        Task task = taskManager.createTask(new Task("Task", "Task.descr"));
+        Task task = taskManager.createTask(new Task("Model.Task", "Model.Task.descr"));
         final int taskId = task.getId();
 
         final Task savedTask = taskManager.getTaskById(taskId);
@@ -51,7 +57,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void shouldCreateNewEpicAndSearchById() {
-        Epic epic = taskManager.createEpic(new Epic("Epic", "Epic.descr"));
+        Epic epic = taskManager.createEpic(new Epic("Model.Epic", "Model.Epic.descr"));
         final int epicId = epic.getId();
 
         final Task savedEpic= taskManager.getEpicById(epicId);
@@ -68,7 +74,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void shouldCreateNewSubTaskAndSearchById() {
-        Epic epic = taskManager.createEpic(new Epic("Epic", "Epic.descr"));
+        Epic epic = taskManager.createEpic(new Epic("Model.Epic", "Model.Epic.descr"));
         SubTask subTask = taskManager.createSubTask(new SubTask("ST", "STdescr", epic.getId()));
         final int subTaskId = subTask.getId();
 
@@ -91,12 +97,12 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void tasksWhithTheSpecifiedAndGeneratedIdDoNotConflict() {
-        Task task1 = taskManager.createTask(new Task("Task1", "Task.descr1"));
+        Task task1 = taskManager.createTask(new Task("Task1", "Model.Task.descr1"));
         assertEquals(1, task1.getId(), "У первой задачи id должен быть равен 1");
-        Task task2 = taskManager.createTask(new Task(2, "Task2", "Task.descr2", Status.NEW));
+        Task task2 = taskManager.createTask(new Task(2, "Task2", "Model.Task.descr2", Status.NEW));
         assertEquals(2, task2.getId(), "У второй задачи id должен быть равен 2");
         assertEquals(2, taskManager.getAllTasks().size(), "Задачи с заданным id менеджер не может обработать");
-        Task task3 = new Task(1, "Task3", "Task.descr3", Status.NEW);
+        Task task3 = new Task(1, "Task3", "Model.Task.descr3", Status.NEW);
         Task taskSaved = taskManager.createTask(task3);
         assertEquals(3, taskSaved.getId(), "Задача с заданным id затирает созданную ранее задачу с таким же id");
         assertEquals(task1, taskManager.getAllTasks().getFirst(), "Первая задача (со сгенерированным id) добавлена первой в список");

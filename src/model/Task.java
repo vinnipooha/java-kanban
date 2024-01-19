@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Objects;
 
 public class Task {
@@ -6,7 +8,6 @@ public class Task {
     protected String name;
     protected String description;
     protected Status status;
-    protected static int count = 0;
 
     public Task(String name, String description) {
         this.name = name;

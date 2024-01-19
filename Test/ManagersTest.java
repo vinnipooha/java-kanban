@@ -1,19 +1,18 @@
+import manager.Managers;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ManagersTest {
 
     @Test
-    public void shouldReturnInitializedAndReadyToWorkTaskManager() {
+    void shouldReturnInitializedAndReadyToWorkTaskManager() {
 
-        assertNotNull(Managers.getDefault(), "TaskManager не создан");
+        assertNotNull(Managers.getDefault(), "Manager.TaskManager не создан");
     }
 
-        @Test
-        public void shouldReturnInitializedAndReadyToWorkHistoryManager() {
-        assertNotNull(Managers.getDefaultHistory(), "HistoryManager не создан");
+    @Test
+    void shouldReturnInitializedAndReadyToWorkHistoryManager() {
+        assertNotNull(Managers.getDefaultHistory(), "Manager.HistoryManager не создан");
     }
 }

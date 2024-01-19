@@ -1,5 +1,13 @@
+package manager;
+
+import model.Epic;
+import model.Status;
+import model.SubTask;
+import model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks;
@@ -134,7 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
         epicForUpdate.setStatus(calculateStatus(epicForUpdate));
     }
 
-    public Status calculateStatus(Epic epic) {
+    private Status calculateStatus(Epic epic) {
         ArrayList<Integer> subTaskList = epic.getSubTasks();
         if (subTaskList.isEmpty()) {
             return Status.NEW;
@@ -212,7 +220,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 }

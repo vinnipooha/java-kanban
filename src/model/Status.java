@@ -1,3 +1,5 @@
+package model;
+
 public enum Status{
     NEW("Новая"),
     IN_PROGRESS("В процессе"),
