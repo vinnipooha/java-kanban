@@ -15,28 +15,39 @@ public class Main {
         Epic epic2 = taskManager.createEpic(new Epic("Эпик", "Сдать проект"));
         SubTask subTask1 = taskManager.createSubTask(new SubTask("Подзадача", "Создать необходимые классы", epic1.getId()));
         SubTask subTask2 = taskManager.createSubTask(new SubTask("Подзадача", "Написать методы, согласно ТЗ", epic1.getId()));
-        SubTask subTask3 = taskManager.createSubTask(new SubTask("Подзадача", "Отправить изменения на GitHub", epic2.getId()));
+        SubTask subTask3 = taskManager.createSubTask(new SubTask("Подзадача", "Отправить изменения на GitHub", epic1.getId()));
 
         printAllTasks(taskManager);
 
-        taskManager.updateTask(new Task(task1.getId(), "Задача", "Изучить теорию", Status.IN_PROGRESS));
-        taskManager.updateTask(new Task(task2.getId(), "Задача", "Прочитать ТЗ", Status.DONE));
+       taskManager.getTaskById(1);
+       taskManager.getTaskById(2);
+       taskManager.getEpicById(3);
+       taskManager.getEpicById(4);
+       taskManager.getSubTaskById(5);
+       taskManager.getSubTaskById(6);
+       taskManager.getSubTaskById(7);
 
-        taskManager.updateSubTask(new SubTask(subTask1.getId(), "Подзадача", "Создать необходимые классы", Status.DONE, epic1.getId()));
-        taskManager.updateSubTask(new SubTask(subTask2.getId(), "Подзадача", "Написать методы, согласно ТЗ", Status.DONE, epic1.getId()));
-        taskManager.updateSubTask(new SubTask(subTask3.getId(), "Подзадача", "Отправить изменения на GitHub", Status.IN_PROGRESS, epic2.getId()));
+       printHistory(taskManager);
 
-        printAllTasks(taskManager);
-
-        taskManager.deleteTaskById(task1.getId());
-        taskManager.deleteEpicById(epic2.getId());
+        taskManager.getSubTaskById(5);
         taskManager.getTaskById(2);
-        taskManager.getEpicById(3);
+        taskManager.getSubTaskById(7);
         taskManager.getSubTaskById(6);
+        taskManager.getTaskById(1);
+        taskManager.getEpicById(4);
+        taskManager.getEpicById(3);
 
-        printAllTasks(taskManager);
+       printHistory(taskManager);
 
+       taskManager.deleteTaskById(2);
+
+       printHistory(taskManager);
+
+       taskManager.deleteEpicById(3);
+
+       printHistory(taskManager);
     }
+
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getAllTasks()) {
@@ -55,6 +66,14 @@ public class Main {
             System.out.println(subtask);
         }
 
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+        System.out.println();
+    }
+
+    private static void printHistory (TaskManager manager) {
         System.out.println("История:");
         for (Task task : manager.getHistory()) {
             System.out.println(task);

@@ -5,8 +5,7 @@ import model.Status;
 import model.SubTask;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
     TaskManager taskManager = Managers.getDefault();
@@ -22,13 +21,13 @@ class EpicTest {
     }
 
     @Test
-    public void EpicHasNewStatusAfterCreate() {
+    void EpicHasNewStatusAfterCreate() {
         Epic epic = new Epic("Epic2", "description2");
         Epic result = taskManager.createEpic(epic);
         assertEquals(Status.NEW, result.getStatus(), "Рассчет статуса эпика при отсутствии сабтасок неверен");
     }
     @Test
-    public void EpicHasNewStatusWhenAllSubTasksAreNew() {
+    void EpicHasNewStatusWhenAllSubTasksAreNew() {
         Epic epic = taskManager.createEpic(new Epic("Epic3", "descr3"));
         int epicId = epic.getId();
         SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
@@ -39,7 +38,7 @@ class EpicTest {
     }
 
     @Test
-    public void EpicHasInProgressStatusWhenSubTasksAreNewAndDone() {
+    void EpicHasInProgressStatusWhenSubTasksAreNewAndDone() {
         Epic epic = taskManager.createEpic(new Epic("Epic4", "descr4"));
         int epicId = epic.getId();
         SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
@@ -50,7 +49,7 @@ class EpicTest {
         }
 
     @Test
-    public void EpicHasInProgressStatusWhenSubTasksAreInProgress() {
+    void EpicHasInProgressStatusWhenSubTasksAreInProgress() {
         Epic epic = taskManager.createEpic(new Epic("Epic5", "descr5"));
         int epicId = epic.getId();
         SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
@@ -62,7 +61,7 @@ class EpicTest {
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Рассчет статуса эпика при IN_PROGRESS некорректен");
     }
     @Test
-    public void EpicHasDoneStatusWhenAllSubTasksAreDone() {
+    void EpicHasDoneStatusWhenAllSubTasksAreDone() {
         Epic epic = taskManager.createEpic(new Epic("Epic6", "descr6"));
         int epicId = epic.getId();
         SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));

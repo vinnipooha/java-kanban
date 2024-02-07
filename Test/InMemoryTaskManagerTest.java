@@ -20,7 +20,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void canNotAddEpicAsItsSubtask() {
+    void canNotAddEpicAsItsSubtask() {
         Epic epic = taskManager.createEpic(new Epic("Epic1", "descr1"));
         SubTask subTask = taskManager.createSubTask(new SubTask("ST1", "STdescr", epic.getId()));
         int epicId = epic.getId();
@@ -29,7 +29,7 @@ class InMemoryTaskManagerTest {
         assertNull(taskManager.getSubTaskById(epicId), "Model.Epic нельзя добавить в самого себя в виде подзадачи");
     }
     @Test
-    public void canNotAddSubTaskAsItsEpic() {
+    void canNotAddSubTaskAsItsEpic() {
         Epic epic = taskManager.createEpic(new Epic("Model.Epic", "descr"));
         SubTask subTask = taskManager.createSubTask(new SubTask("ST1", "STdescr", epic.getId()));
         int subTaskId = subTask.getId();
@@ -39,7 +39,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldCreateNewTaskAndSearchById() {
+    void shouldCreateNewTaskAndSearchById() {
         Task task = taskManager.createTask(new Task("Model.Task", "Model.Task.descr"));
         final int taskId = task.getId();
 
@@ -56,7 +56,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldCreateNewEpicAndSearchById() {
+    void shouldCreateNewEpicAndSearchById() {
         Epic epic = taskManager.createEpic(new Epic("Model.Epic", "Model.Epic.descr"));
         final int epicId = epic.getId();
 
@@ -73,7 +73,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldCreateNewSubTaskAndSearchById() {
+    void shouldCreateNewSubTaskAndSearchById() {
         Epic epic = taskManager.createEpic(new Epic("Model.Epic", "Model.Epic.descr"));
         SubTask subTask = taskManager.createSubTask(new SubTask("ST", "STdescr", epic.getId()));
         final int subTaskId = subTask.getId();
@@ -96,7 +96,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void tasksWhithTheSpecifiedAndGeneratedIdDoNotConflict() {
+    void tasksWhithTheSpecifiedAndGeneratedIdDoNotConflict() {
         Task task1 = taskManager.createTask(new Task("Task1", "Model.Task.descr1"));
         assertEquals(1, task1.getId(), "У первой задачи id должен быть равен 1");
         Task task2 = taskManager.createTask(new Task(2, "Task2", "Model.Task.descr2", Status.NEW));
@@ -108,4 +108,34 @@ class InMemoryTaskManagerTest {
         assertEquals(task1, taskManager.getAllTasks().getFirst(), "Первая задача (со сгенерированным id) добавлена первой в список");
         assertEquals(task2, taskManager.getAllTasks().get(1), "Вторая задача (с заданным id) добавлена второй в список");
     }
+
+    @Test
+    void epicShouldNotContainIrrelevantSubtasks() {
+        Epic epic = taskManager.createEpic(new Epic("Epic", "descr"));
+        int epicId = epic.getId();
+        SubTask subTask1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
+        SubTask subTask2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
+
+        int result1Id = subTask1.getId();
+        taskManager.deleteSubTaskById(result1Id);
+
+        assertEquals(1, taskManager.getSubTasksByEpic(epicId).size(), "Удаление подзадач из эпика не работает");
+        assertFalse(taskManager.getSubTasksByEpic(epicId).contains(subTask1), "Внутри эпика неактуальный id подзадачи");
+    }
+
+    @Test
+    void subTaskForDeleteShouldNotContainIrrelevantId() {
+        Epic epic = taskManager.createEpic(new Epic("Epic", "descr"));
+        int epicId = epic.getId();
+        SubTask subTask1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
+        SubTask subTask2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
+        int subTask2Id = subTask2.getId();
+        subTask2.setEpicId(3);
+
+        taskManager.deleteSubTaskById(subTask2Id);
+        assertEquals(2, taskManager.getAllSubTasks().size(), "Удаление подзадачи с неактуальным эпиком");
+    }
+
+
+
 }

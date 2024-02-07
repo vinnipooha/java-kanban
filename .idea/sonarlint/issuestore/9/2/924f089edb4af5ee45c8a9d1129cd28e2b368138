@@ -1,17 +1,44 @@
 
-o
-java:S1192"MDefine a constant instead of duplicating this literal "Ğ—Ğ°Ğ´Ğ°Ñ‡Ğ°" 4 times.(öÊœ¨üÿÿÿÿ8³°§ôĞ1
 u
-java:S1192"SDefine a constant instead of duplicating this literal "ĞŸĞ¾Ğ´Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ°" 6 times.(„Ä“Æüÿÿÿÿ8´°§ôĞ1
+java:S1192"SDefine a constant instead of duplicating this literal "ĞŸĞ¾Ğ´Ğ·Ğ°Ğ´Ğ°Ñ‡Ğ°" 3 times.(„Ä“Æüÿÿÿÿ8æ€„–Ø1
 7
-java:S1220""Move this file to a named package.8µ°§ôĞ1
-L	java:S106)"+Replace this use of System.out by a logger.(±¤ıÚıÿÿÿÿ8Ï°§ôĞ1
-L	java:S106+"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8Ğ°§ôĞ1
-L	java:S106-"+Replace this use of System.out by a logger.(ªÍîàúÿÿÿÿ8Ğ°§ôĞ1
-G	java:S106/"+Replace this use of System.out by a logger.(ÃÜ²8Ñ°§ôĞ1
-L	java:S1062"+Replace this use of System.out by a logger.(ËÛ„­øÿÿÿÿ8Ò°§ôĞ1
-L	java:S1065"+Replace this use of System.out by a logger.(¬÷óîûÿÿÿÿ8Ò°§ôĞ1
-L	java:S1067"+Replace this use of System.out by a logger.(Á¥ä‡üÿÿÿÿ8Ò°§ôĞ1
-L	java:S106:"+Replace this use of System.out by a logger.(ÏùŸœûÿÿÿÿ8Ó°§ôĞ1
-L	java:S106<"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8Ó°§ôĞ1
-L	java:S106>"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ8Ó°§ôĞ1
+java:S1220""Move this file to a named package.8Û„„–Ø1
+^
+java:S1854"<Remove this useless assignment to local variable "subTask3".(ıòá•ÿÿÿÿÿ8ï„„–Ø1
+^
+java:S1854"<Remove this useless assignment to local variable "subTask2".(Ó·Òüÿÿÿÿ8ñ„„–Ø1
+^
+java:S1854"<Remove this useless assignment to local variable "subTask1".(„Ä“Æüÿÿÿÿ8ó„„–Ø1
+[
+java:S1854"9Remove this useless assignment to local variable "epic2".(…ëÊ€üÿÿÿÿ8õ„„–Ø1
+V
+java:S1854"9Remove this useless assignment to local variable "task2".(×“´î8÷„„–Ø1
+[
+java:S1854"9Remove this useless assignment to local variable "task1".(öÊœ¨üÿÿÿÿ8ù„„–Ø1
+L
+java:S1481"*Remove this unused "task1" local variable.(öÊœ¨üÿÿÿÿ8ü„„–Ø1
+G
+java:S1481"*Remove this unused "task2" local variable.(×“´î8ş„„–Ø1
+L
+java:S1481"*Remove this unused "epic2" local variable.(…ëÊ€üÿÿÿÿ8€…„–Ø1
+O
+java:S1481"-Remove this unused "subTask1" local variable.(„Ä“Æüÿÿÿÿ8ƒ…„–Ø1
+O
+java:S1481"-Remove this unused "subTask2" local variable.(Ó·Òüÿÿÿÿ8……„–Ø1
+O
+java:S1481"-Remove this unused "subTask3" local variable.(ıòá•ÿÿÿÿÿ8‡…„–Ø1
+L	java:S1064"+Replace this use of System.out by a logger.(±¤ıÚıÿÿÿÿ8Œ…„–Ø1
+L	java:S1066"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8…„–Ø1
+L	java:S1068"+Replace this use of System.out by a logger.(ªÍîàúÿÿÿÿ8…„–Ø1
+G	java:S106:"+Replace this use of System.out by a logger.(ÃÜ²8’…„–Ø1
+L	java:S106="+Replace this use of System.out by a logger.(ËÛ„­øÿÿÿÿ8”…„–Ø1
+L	java:S106@"+Replace this use of System.out by a logger.(¬÷óîûÿÿÿÿ8–…„–Ø1
+L	java:S106B"+Replace this use of System.out by a logger.(Á¥ä‡üÿÿÿÿ8˜…„–Ø1
+L	java:S106E"+Replace this use of System.out by a logger.(ÏùŸœûÿÿÿÿ8š…„–Ø1
+L	java:S106G"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8œ…„–Ø1
+L	java:S106I"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ8…„–Ø1
+L	java:S106M"+Replace this use of System.out by a logger.(ÏùŸœûÿÿÿÿ8 …„–Ø1
+L	java:S106O"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8¢…„–Ø1
+L	java:S106Q"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ8¤…„–Ø1
+K
+java:S1128")Remove this unused import 'model.Status'.(õ™Ğ·ùÿÿÿÿ8¥…„–Ø1
