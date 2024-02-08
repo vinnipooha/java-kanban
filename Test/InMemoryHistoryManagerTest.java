@@ -32,15 +32,15 @@ class InMemoryHistoryManagerTest {
         historyManager.add(epic);
         assertEquals(3, historyManager.getHistory().size(), "Удаление предыдущих просмотров из истории не работает");
 
-        assertEquals(1, historyManager.getHistory().get(0).getId(), "Порядок просмотра задач не сохраняется");
+        assertEquals(2, historyManager.getHistory().get(0).getId(), "Порядок просмотра задач не сохраняется");
         assertEquals(3, historyManager.getHistory().get(1).getId(), "Порядок просмотра задач не сохраняется");
-        assertEquals(2, historyManager.getHistory().get(2).getId(), "Порядок просмотра задач не сохраняется");
+        assertEquals(1, historyManager.getHistory().get(2).getId(), "Порядок просмотра задач не сохраняется");
 
         historyManager.remove(3);
         assertEquals(2, historyManager.getHistory().size(), "Удаление просмотров не работает");
         assertFalse(historyManager.getHistory().contains(subTask), "");
-        assertEquals(1, historyManager.getHistory().get(0).getId(), "task должна быть первым элементом в списке");
-        assertEquals(2, historyManager.getHistory().get(1).getId(), "epic должен быть вторым элементом в списке");
+        assertEquals(2, historyManager.getHistory().get(0).getId(), "task должна быть первым элементом в списке");
+        assertEquals(1, historyManager.getHistory().get(1).getId(), "epic должен быть вторым элементом в списке");
     }
 
     @Test
@@ -57,8 +57,8 @@ class InMemoryHistoryManagerTest {
         historyManager.remove(2);
         assertEquals(2, historyManager.getHistory().size(), "Удаление просмотров не работает");
         assertFalse(historyManager.getHistory().contains(epic), "Удаление элемента работает некорректно");
-        assertEquals(1, historyManager.getHistory().get(0).getId(), "task должна быть первым элементом в списке");
-        assertEquals(3, historyManager.getHistory().get(1).getId(), "subTask должна быть вторым элементом в списке");
+        assertEquals(3, historyManager.getHistory().get(0).getId(), "task должна быть первым элементом в списке");
+        assertEquals(1, historyManager.getHistory().get(1).getId(), "subTask должна быть вторым элементом в списке");
     }
 
     @Test
@@ -97,7 +97,7 @@ class InMemoryHistoryManagerTest {
 
         inMemoryHistoryManager.removeNode(inMemoryHistoryManager.getHead());
         List<Task> list = inMemoryHistoryManager.getHistory();
-        assertEquals(epic, list.getFirst(), "При удалении head первый элемент списка просмотров не меняется");
+        assertEquals(epic, list.getLast(), "При удалении head последний элемент списка просмотров не меняется");
     }
 
     @Test
@@ -114,7 +114,7 @@ class InMemoryHistoryManagerTest {
 
         inMemoryHistoryManager.removeNode(inMemoryHistoryManager.getTail());
         List<Task> list = inMemoryHistoryManager.getHistory();
-        assertEquals(epic, list.getLast(), "При удалении tail последний элемент списка просмотров не меняется");
+        assertEquals(epic, list.getFirst(), "При удалении tail первый элемент списка просмотров не меняется");
     }
 
     @Test
@@ -141,8 +141,8 @@ class InMemoryHistoryManagerTest {
 
         List<Task> list1 = inMemoryHistoryManager.getHistory();
         assertEquals(2, list1.size(), "Удаление элементов не работает");
-        assertEquals(task, list1.getFirst(), "Первым элементом должна быть task");
-        assertEquals(subTask, list1.getLast(), "Вторым элементом долна быть subTask");
+        assertEquals(subTask, list1.getFirst(), "Первым элементом должна быть subTask");
+        assertEquals(task, list1.getLast(), "Вторым элементом долна быть task");
     }
 
     @Test
