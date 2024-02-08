@@ -15,11 +15,6 @@ class InMemoryHistoryManagerTest {
 
     HistoryManager historyManager;
 
-    @BeforeEach
-    public void BeforeEach() {
-        historyManager = Managers.getDefaultHistory();
-    }
-
     @Test
     void shouldDeleteThePreviousTaskView() {
         historyManager = Managers.getDefaultHistory();
@@ -50,6 +45,7 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void shouldRemoveNodeForId() {
+        historyManager = Managers.getDefaultHistory();
         Task task = new Task(1, "T1", "descr1");
         Epic epic = new Epic(2, "Epic", "Epic.descr");
         SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2);
@@ -65,7 +61,7 @@ class InMemoryHistoryManagerTest {
         assertEquals(3, historyManager.getHistory().get(1).getId(), "subTask должна быть вторым элементом в списке");
     }
 
-        @Test
+    @Test
     void shouldAddNodeInOrder() {
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
@@ -82,7 +78,7 @@ class InMemoryHistoryManagerTest {
 
         inMemoryHistoryManager.linkLast(task);
 
-        List<Task> list = inMemoryHistoryManager.getTasks();
+        List<Task> list = inMemoryHistoryManager.getHistory();
         assertEquals(4, list.size(), "Добавление задач в список не работает");
         assertEquals(task, inMemoryHistoryManager.getTail().getTask(), "Последним элементом должна быть task");
     }
@@ -100,7 +96,7 @@ class InMemoryHistoryManagerTest {
         inMemoryHistoryManager.linkLast(subTask);
 
         inMemoryHistoryManager.removeNode(inMemoryHistoryManager.getHead());
-        List<Task> list = inMemoryHistoryManager.getTasks();
+        List<Task> list = inMemoryHistoryManager.getHistory();
         assertEquals(epic, list.getFirst(), "При удалении head первый элемент списка просмотров не меняется");
     }
 
@@ -117,7 +113,7 @@ class InMemoryHistoryManagerTest {
         inMemoryHistoryManager.linkLast(subTask);
 
         inMemoryHistoryManager.removeNode(inMemoryHistoryManager.getTail());
-        List<Task> list = inMemoryHistoryManager.getTasks();
+        List<Task> list = inMemoryHistoryManager.getHistory();
         assertEquals(epic, list.getLast(), "При удалении tail последний элемент списка просмотров не меняется");
     }
 
@@ -143,9 +139,27 @@ class InMemoryHistoryManagerTest {
 
         inMemoryHistoryManager.removeNode(nodeForDelete);
 
-        List<Task> list1 = inMemoryHistoryManager.getTasks();
+        List<Task> list1 = inMemoryHistoryManager.getHistory();
         assertEquals(2, list1.size(), "Удаление элементов не работает");
         assertEquals(task, list1.getFirst(), "Первым элементом должна быть task");
         assertEquals(subTask, list1.getLast(), "Вторым элементом долна быть subTask");
+    }
+
+    @Test
+    void removeNodeWhenItIsAlone() {
+        InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+
+        Task task = new Task(1, "T1", "descr1");
+        inMemoryHistoryManager.linkLast(task);
+
+        List<Task> list = inMemoryHistoryManager.getHistory();
+        assertEquals(1, list.size());
+
+        Map<Integer, Node> historyMap = inMemoryHistoryManager.getHistoryMap();
+        Node nodeForDelete = historyMap.get(1);
+        inMemoryHistoryManager.removeNode(nodeForDelete);
+
+        List<Task> list2 = inMemoryHistoryManager.getHistory();
+        assertEquals(0, list2.size(), "Удаление задачи из истории работает некорректно");
     }
 }

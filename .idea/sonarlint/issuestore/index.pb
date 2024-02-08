@@ -85,3 +85,6 @@ E
 src/model/Status.java,9\4\9426782f3e2fa53e0e77506ab5c68ba1dd2a0228
 C
 src/model/Node.java,2\e\2ed6a95e5ca7a56d152c3ceff145ee8e83016852
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
