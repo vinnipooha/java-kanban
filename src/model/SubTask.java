@@ -21,7 +21,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return (getId() + ", \' " + getName() +"\' (эпик " +epicId + "), описание: \'" +
+        return (getId() + ", \' " + getName() +"\' (epicId " + epicId + "), описание: \'" +
                 getDescription() + "\', статус: \'"+ getStatus() + "\'");
     }
 

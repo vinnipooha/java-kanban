@@ -3,16 +3,6 @@
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 =
 src/Main.java,9\2\924f089edb4af5ee45c8a9d1129cd28e2b368138
-=
-src/Task.java,1\5\1563d9cc43d5cc4a5c559a91e0489b8331ce260c
-D
-src/TaskManager.java,9\b\9b8f132576a374eb386e9a71798557962c27e297
-?
-src/Status.java,d\f\dff23e43724ea3ae7d8261325c931f1f98fed9c9
-=
-src/Epic.java,2\b\2b84a0a14af27d1f1130a627b5e77dcfe54fa918
-@
-src/SubTask.java,f\c\fcfb69472622f272eb5d8f453e69584d0e529474
 w
 G.idea/sonarlint/issuestore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,b\4\b4a0b63ce8560bbc5de0f9995c20cc861dc2adb3
 Å
@@ -25,16 +15,8 @@ S
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
 ?
 java-kanban.iml,d\f\df5dcbbd3f931c7c23855ccec11732ab4c8544f2
-L
-src/InMemoryTaskManager.java,d\9\d9471a1850e784f125cbfd21de0a4199c55db41d
 B
 Test/EpicTest.java,f\2\f233f92ba3e2a86ba127b689cd796945715e7dd6
-G
-src/HistoryManager.java,6\8\683eacbb740e7ab6b2ed7002c0555ed3c0ea1882
-A
-src/Managers.java,2\1\21fbc44616776c07f726e3660815b1a2df3799cb
-O
-src/InMemoryHistoryManager.java,e\1\e1029319bfd877a0096a93ae68d03aeea5a3dd04
 B
 Test/TaskTest.java,0\1\0143250bfa8e76f09f5bfe8c0b8ac63cbf5fcc55
 E
@@ -45,18 +27,6 @@ F
 Test/ManagersTest.java,2\8\28e3d1f4053bc3e92bef7044dd54c9f0a2edd1ce
 T
 $Test/InMemoryHistoryManagerTest.java,c\e\ce43829de7e6a77887b1865b7450f8f76de23897
-Å
-Q.idea/sonarlint/securityhotspotstore/2/1/21fbc44616776c07f726e3660815b1a2df3799cb,e\4\e4b551dd86400e161c51c3413f3fe99306fa1fd9
-Å
-Q.idea/sonarlint/securityhotspotstore/e/1/e1029319bfd877a0096a93ae68d03aeea5a3dd04,7\a\7a10b6169e4da218bc3c725b1c0b051436333062
-Å
-Q.idea/sonarlint/securityhotspotstore/9/b/9b8f132576a374eb386e9a71798557962c27e297,8\c\8cfc0f12313ccbfa6361e380c28aa746464b1084
-Å
-Q.idea/sonarlint/securityhotspotstore/d/f/dff23e43724ea3ae7d8261325c931f1f98fed9c9,0\1\01eb7f7043bb478ca5e60f18778d94ed9cff1b95
-Å
-Q.idea/sonarlint/securityhotspotstore/2/b/2b84a0a14af27d1f1130a627b5e77dcfe54fa918,a\6\a651e27c46810b0b9a4765c889962e671b065ea3
-Å
-Q.idea/sonarlint/securityhotspotstore/f/c/fcfb69472622f272eb5d8f453e69584d0e529474,c\f\cf5db2cefc29ec337a43b9a9d721f74b3e686447
 w
 G.idea/sonarlint/issuestore/b/0/b08f1ab659fbdd998f45c0def99188f980cc899b,f\0\f02077a62409edef2ca75d759afa0d272bb868f2
 w
@@ -83,12 +53,6 @@ Q.idea/sonarlint/securityhotspotstore/8/8/88a9255124c95bdc913197c120a8d560edc59c
 Q.idea/sonarlint/securityhotspotstore/d/f/df5dcbbd3f931c7c23855ccec11732ab4c8544f2,2\7\27c5b40e908fead928b18bf396b18ae388229e21
 Å
 Q.idea/sonarlint/securityhotspotstore/f/2/f233f92ba3e2a86ba127b689cd796945715e7dd6,7\3\730160ca979926b7445ee314e8af1b811557be18
-Å
-Q.idea/sonarlint/securityhotspotstore/d/9/d9471a1850e784f125cbfd21de0a4199c55db41d,4\7\47388c585ae0875cf8f70f5519ccb4b706701526
-Å
-Q.idea/sonarlint/securityhotspotstore/1/5/1563d9cc43d5cc4a5c559a91e0489b8331ce260c,8\6\862ece2c9e205fac87d6c957efbec49093616cb2
-Å
-Q.idea/sonarlint/securityhotspotstore/6/8/683eacbb740e7ab6b2ed7002c0555ed3c0ea1882,e\8\e87111e77e56b361f72abd2d733c4e310a61af7e
 W
 'src/Manager/InMemoryHistoryManager.java,4\5\45bf983a0014e85c625fb879439cea9a2bae5b12
 I
@@ -119,3 +83,8 @@ L
 src/manager/TaskManager.java,f\a\faa70362252a04b2ad35762a07b341f056f03658
 E
 src/model/Status.java,9\4\9426782f3e2fa53e0e77506ab5c68ba1dd2a0228
+C
+src/model/Node.java,2\e\2ed6a95e5ca7a56d152c3ceff145ee8e83016852
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
