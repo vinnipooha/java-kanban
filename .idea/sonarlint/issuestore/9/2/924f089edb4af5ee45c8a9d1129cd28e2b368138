@@ -1,44 +1,0 @@
-
-u
-java:S1192"SDefine a constant instead of duplicating this literal "ÐŸÐ¾Ð´Ð·Ð°Ð´Ð°Ñ‡Ð°" 3 times.(„Ä“Æüÿÿÿÿ8æ€„–Ø1
-7
-java:S1220""Move this file to a named package.8Û„„–Ø1
-^
-java:S1854"<Remove this useless assignment to local variable "subTask3".(ýòá•ÿÿÿÿÿ8ï„„–Ø1
-^
-java:S1854"<Remove this useless assignment to local variable "subTask2".(žÓ·Òüÿÿÿÿ8ñ„„–Ø1
-^
-java:S1854"<Remove this useless assignment to local variable "subTask1".(„Ä“Æüÿÿÿÿ8ó„„–Ø1
-[
-java:S1854"9Remove this useless assignment to local variable "epic2".(…ëÊ€üÿÿÿÿ8õ„„–Ø1
-V
-java:S1854"9Remove this useless assignment to local variable "task2".(×“´î8÷„„–Ø1
-[
-java:S1854"9Remove this useless assignment to local variable "task1".(öÊœ¨üÿÿÿÿ8ù„„–Ø1
-L
-java:S1481"*Remove this unused "task1" local variable.(öÊœ¨üÿÿÿÿ8ü„„–Ø1
-G
-java:S1481"*Remove this unused "task2" local variable.(×“´î8þ„„–Ø1
-L
-java:S1481"*Remove this unused "epic2" local variable.(…ëÊ€üÿÿÿÿ8€…„–Ø1
-O
-java:S1481"-Remove this unused "subTask1" local variable.(„Ä“Æüÿÿÿÿ8ƒ…„–Ø1
-O
-java:S1481"-Remove this unused "subTask2" local variable.(žÓ·Òüÿÿÿÿ8……„–Ø1
-O
-java:S1481"-Remove this unused "subTask3" local variable.(ýòá•ÿÿÿÿÿ8‡…„–Ø1
-L	java:S1064"+Replace this use of System.out by a logger.(±¤ýÚýÿÿÿÿ8Œ…„–Ø1
-L	java:S1066"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8Ž…„–Ø1
-L	java:S1068"+Replace this use of System.out by a logger.(ªÍîàúÿÿÿÿ8…„–Ø1
-G	java:S106:"+Replace this use of System.out by a logger.(ÃÜ²8’…„–Ø1
-L	java:S106="+Replace this use of System.out by a logger.(ËÛ„­øÿÿÿÿ8”…„–Ø1
-L	java:S106@"+Replace this use of System.out by a logger.(¬÷óîûÿÿÿÿ8–…„–Ø1
-L	java:S106B"+Replace this use of System.out by a logger.(Á¥ä‡üÿÿÿÿ8˜…„–Ø1
-L	java:S106E"+Replace this use of System.out by a logger.(ÏùŸœûÿÿÿÿ8š…„–Ø1
-L	java:S106G"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8œ…„–Ø1
-L	java:S106I"+Replace this use of System.out by a logger.(ªÓ¼áþÿÿÿÿ8ž…„–Ø1
-L	java:S106M"+Replace this use of System.out by a logger.(ÏùŸœûÿÿÿÿ8 …„–Ø1
-L	java:S106O"+Replace this use of System.out by a logger.(ÍÖÖûÿÿÿÿ8¢…„–Ø1
-L	java:S106Q"+Replace this use of System.out by a logger.(ªÓ¼áþÿÿÿÿ8¤…„–Ø1
-K
-java:S1128")Remove this unused import 'model.Status'.(õ™Ð·ùÿÿÿÿ8¥…„–Ø1
