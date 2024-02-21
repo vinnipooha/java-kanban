@@ -19,10 +19,13 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
+    public  Type getType() {
+        return Type.SUBTASK;
+    }
+
     @Override
     public String toString() {
-        return (getId() + ", \' " + getName() +"\' (epicId " + epicId + "), описание: \'" +
-                getDescription() + "\', статус: \'"+ getStatus() + "\'");
+        return (getId() + ",SUBTASK," + getName() +"," + getStatus()  + "," + getDescription() + "," + epicId);
     }
 
     @Override

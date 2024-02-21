@@ -5,12 +5,12 @@ public enum Status{
     IN_PROGRESS("В процессе"),
     DONE("Завершена");
 
-private String string;
+private final String status;
 Status(String name) {
-    string = name;
+    status = name;
 }
-    @Override
-    public String toString() {
-        return string;
+   @Override
+   public String toString() {
+        return status;
     }
 }
