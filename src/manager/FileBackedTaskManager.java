@@ -6,7 +6,6 @@ import model.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +102,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         Status status = null;
         Status[] statuses = Status.values();
         for (int i = 0; i < statuses.length && status == null; i++) {
-            if (statuses[i].toString().equals(columns[3])) {
+            if (statuses[i].getStatus().equals(columns[3])) {
                 status = statuses[i];
             }
         }

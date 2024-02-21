@@ -1,7 +1,10 @@
 package model;
 
+import java.util.Objects;
+
 public class SubTask extends Task {
     private int epicId;
+
     public SubTask(String name, String description, int epicId) {
         super(name, description);
         this.epicId = epicId;
@@ -11,6 +14,7 @@ public class SubTask extends Task {
         super(id, name, description, status);
         this.epicId = epicId;
     }
+
     public int getEpicId() {
         return epicId;
     }
@@ -19,14 +23,16 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-    public  Type getType() {
+    @Override
+    public Type getType() {
         return Type.SUBTASK;
     }
 
     @Override
     public String toString() {
-        return (getId() + ",SUBTASK," + getName() +"," + getStatus()  + "," + getDescription() + "," + epicId);
+        return (getId() + ",SUBTASK," + getName() + "," + status.getStatus() + "," + getDescription() + "," + epicId);
     }
+
 
     @Override
     public boolean equals(Object object) {
@@ -37,4 +43,8 @@ public class SubTask extends Task {
         return epicId == subTask.epicId;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), epicId);
+    }
 }

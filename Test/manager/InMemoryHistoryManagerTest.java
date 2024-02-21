@@ -1,17 +1,13 @@
 package manager;
 
-import manager.HistoryManager;
-import manager.InMemoryHistoryManager;
-import manager.Managers;
-import manager.TaskManager;
 import model.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class InMemoryHistoryManagerTest {
 

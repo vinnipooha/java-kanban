@@ -63,7 +63,7 @@ class FileBackedTaskManagerTest {
         try (BufferedReader reader = new BufferedReader(new FileReader(tempFile.toString()))) {
             String line = reader.readLine();
             assertEquals("id,type,name,status,description,epic", line, "Первой строкой должен быть заголовок");
-            for (int i = 1; i <= 6 ; i++) {
+            for (int i = 1; i <= 6; i++) {
                 String testLine = reader.readLine();
                 if (i == 1) assertEquals(task1.toString(), testLine, "Второй строкой должна быть запись task1");
                 if (i == 3) assertEquals(epic2.toString(), testLine, "Четвертой строкой должна быть запись subTask1");
@@ -96,7 +96,6 @@ class FileBackedTaskManagerTest {
 
 
     }
-
 
 
 }

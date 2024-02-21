@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
@@ -18,7 +19,7 @@ public class Epic extends Task {
         subTasks.add(subTaskId);
     }
 
-    public ArrayList<Integer> getSubTasks() {
+    public List<Integer> getSubTasks() {
         return subTasks;
     }
 
@@ -37,7 +38,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return (getId() + ",EPIC," + getName() + "," + getStatus() + "," + getDescription());
+        return (getId() + ",EPIC," + getName() + "," + status.getStatus() + "," + getDescription());
     }
 
     @Override
@@ -57,7 +58,7 @@ public class Epic extends Task {
         if (getName() != null) {
             hash = hash + getName().hashCode();
         }
-        hash = hash*31;
+        hash = hash * 31;
         if (getDescription() != null) {
             hash = hash + getDescription().hashCode();
         }

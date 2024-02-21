@@ -66,7 +66,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return (id + ",TASK," + name + "," + status + "," + description);
+        return (id + ",TASK," + name + "," + status.getStatus() + "," + description);
     }
 
     @Override
@@ -81,6 +81,6 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(),getDescription());
+        return Objects.hash(getName(), getDescription());
     }
 }
