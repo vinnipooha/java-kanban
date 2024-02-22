@@ -23,7 +23,7 @@ class FileBackedTaskManagerTest {
     void beforeEach() throws IOException {
         try {
             tempFile = Files.createTempFile("test-", ".tmp");
-            fileManager = new FileBackedTaskManager(Managers.getDefaultHistory(), tempFile);
+            fileManager = new FileBackedTaskManager(tempFile);
         } catch (IOException e) {
             throw new IOException("Произошла ошибка создания файла");
         }
@@ -31,13 +31,12 @@ class FileBackedTaskManagerTest {
 
     @Test
     void shouldSaveAndLoadIsEmptyFile() throws IOException {
-        fileManager.save();
+
         assertTrue(Files.exists(tempFile), "Файл для записи данных не был создан");
 
         try {
             String contentsOfTheFile = Files.readString(tempFile);
-            String[] split = contentsOfTheFile.split(",");
-            assertEquals(6, split.length, "После сохранения пустого менеджера в файле должен быть только заголовок");
+            assertTrue(contentsOfTheFile.isEmpty(), "После создания менеджера файл должен быть пустым");
             FileBackedTaskManager fileManagerTest = FileBackedTaskManager.loadFromFile(tempFile);
             assertNotNull(fileManagerTest, "Загрузка из пустого файла не сработала");
             assertTrue(fileManagerTest.getAllTasks().isEmpty(), "После загрузки из пустого файла список задач должен быть пустым");

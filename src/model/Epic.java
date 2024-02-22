@@ -9,10 +9,12 @@ public class Epic extends Task {
 
     public Epic(String name, String description) {
         super(name, description);
+        setType(Type.EPIC);
     }
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
+        setType(Type.EPIC);
     }
 
     public void addSubTask(Integer subTaskId) {
@@ -33,12 +35,12 @@ public class Epic extends Task {
 
     @Override
     public Type getType() {
-        return Type.EPIC;
+        return type;
     }
 
     @Override
     public String toString() {
-        return (getId() + ",EPIC," + getName() + "," + status.getStatus() + "," + getDescription());
+        return (getId() + "," + getType() + "," + getName() + "," + status.getStatus() + "," + getDescription());
     }
 
     @Override

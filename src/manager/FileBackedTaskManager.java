@@ -6,19 +6,50 @@ import model.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.nio.file.Paths;
 import java.util.List;
 
-public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
+import static manager.CSVFormat.*;
+
+public class FileBackedTaskManager extends InMemoryTaskManager {
     protected Path path;
     static final String HEADER = "id,type,name,status,description,epic\n";
 
-    public FileBackedTaskManager(HistoryManager historyManager, Path path) {
-        super(historyManager);
+    public FileBackedTaskManager(Path path) {
+        super(Managers.getDefaultHistory());
         this.path = path;
+
     }
 
-    public void save() {
+    public static void main(String[] args) {
+        FileBackedTaskManager fileManager = new FileBackedTaskManager(Paths.get("sourses/saveTasksTest.csv"));
+        fileManager.createTask(new Task("Task1", "T_descr"));
+        fileManager.createEpic(new Epic("Epic1", "E_descr1"));
+        fileManager.createSubTask(new SubTask("ST1", "ST_descr1", 2));
+        fileManager.createSubTask(new SubTask("ST2", "ST_descr2", 2));
+
+        fileManager.getTaskById(1);
+        fileManager.getEpicById(2);
+        fileManager.getSubTaskById(3);
+
+        System.out.println(fileManager.getAllTasks());
+        System.out.println(fileManager.getAllEpics());
+        System.out.println(fileManager.getAllSubTasks());
+        System.out.println("История:");
+        System.out.println(fileManager.getHistory());
+
+        System.out.println("\n" + "new" + "\n");
+
+        FileBackedTaskManager fileManagerToLoad = loadFromFile(Paths.get("sourses/saveTasksTest.csv"));
+
+        System.out.println(fileManagerToLoad.getAllTasks());
+        System.out.println(fileManagerToLoad.getAllEpics());
+        System.out.println(fileManagerToLoad.getAllSubTasks());
+        System.out.println("История:");
+        System.out.println(fileManagerToLoad.getHistory());
+    }
+
+    private void save() {
         try (FileWriter fileWriter = new FileWriter(path.toString(), StandardCharsets.UTF_8)) {
             fileWriter.write(HEADER);
             for (Integer key : tasks.keySet()) {
@@ -40,22 +71,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     public static FileBackedTaskManager loadFromFile(Path path) {
-        FileBackedTaskManager fileBakedManager = new FileBackedTaskManager(Managers.getDefaultHistory(), path);
+        FileBackedTaskManager fileBakedManager = new FileBackedTaskManager(path);
         fileBakedManager.load();
         return fileBakedManager;
     }
 
-    public void load() {
+    private void load() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toString()))) {
             bufferedReader.readLine();  //прочитали заголовок
             while (true) {
                 String line = bufferedReader.readLine();
-                if (line == null) {
+                if (line == null || line.isEmpty()) {
                     break;
                 }
-                if (line.isEmpty()) {
-                    break;
-                }
+
                 Task task = taskFromString(line);
                 int id = task.getId();
 
@@ -94,71 +123,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             throw new RuntimeException("Ошибка чтения из файла", e);
         }
     }
-
-    public Task taskFromString(String value) throws RuntimeException {
-        String[] columns = value.split(",");
-        int id = Integer.parseInt(columns[0]);
-
-        Status status = null;
-        Status[] statuses = Status.values();
-        for (int i = 0; i < statuses.length && status == null; i++) {
-            if (statuses[i].getStatus().equals(columns[3])) {
-                status = statuses[i];
-            }
-        }
-        if (status == null) {
-            throw new RuntimeException("Статус не найден: " + columns[3]);
-        }
-        Type type = Type.valueOf(columns[1]);
-
-        Task task;
-
-        switch (type) {
-            case TASK:
-                task = new Task(id, columns[2], columns[4], status);
-                break;
-
-            case EPIC:
-                task = new Epic(id, columns[2], columns[4]);
-                task.setStatus(status);
-                break;
-
-            case SUBTASK:
-                task = new SubTask(id, columns[2], columns[4], status, Integer.parseInt(columns[5]));
-                break;
-
-            default:
-                throw new ManagerSaveException(("Неизвестный тип объекта " + type));
-        }
-
-        return task;
-    }
-
-    static String historyToString(HistoryManager historyManager) {
-        List<Task> historyList = historyManager.getHistory();
-        StringBuilder builder = new StringBuilder();
-        int counter = 0;
-        for (Task task : historyList) {
-            if (counter < historyList.size() - 1) {
-                builder.append(task.getId());
-                builder.append(",");
-            } else {
-                builder.append(task.getId());
-            }
-            counter++;
-        }
-        return builder.toString();
-    }
-
-    static List<Integer> historyFromString(String value) {
-        String[] split = value.split(",");
-        List<Integer> list = new ArrayList<>();
-        for (int i = split.length - 1; i >= 0; i--) {
-            list.add(Integer.valueOf(split[i]));
-        }
-        return list;
-    }
-
 
     @Override
     public Task createTask(Task task) {
