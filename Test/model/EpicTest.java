@@ -1,23 +1,23 @@
+package model;
+
 import manager.Managers;
 import manager.TaskManager;
-import model.Epic;
-import model.Status;
-import model.SubTask;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EpicTest {
     TaskManager taskManager = Managers.getDefault();
 
     @Test
     void EpicsAreEqualIfTheirIdIsEqual() {
-    Epic epic = new Epic("Epic1", "description1");
-    Epic result = taskManager.createEpic(epic);
-    int resultId = result.getId();
-    Epic epic1 = new Epic(resultId, "Epic1", "description1");
-    assertTrue(resultId > 0, "Счетчик id не работает");
-    assertEquals(result, epic1, "Эпики с одинаковым id должны быть равны");
+        Epic epic = new Epic("Epic1", "description1");
+        Epic result = taskManager.createEpic(epic);
+        int resultId = result.getId();
+        Epic epic1 = new Epic(resultId, "Epic1", "description1");
+        assertTrue(resultId > 0, "Счетчик id не работает");
+        assertEquals(result, epic1, "Эпики с одинаковым id должны быть равны");
     }
 
     @Test
@@ -26,6 +26,7 @@ class EpicTest {
         Epic result = taskManager.createEpic(epic);
         assertEquals(Status.NEW, result.getStatus(), "Рассчет статуса эпика при отсутствии сабтасок неверен");
     }
+
     @Test
     void EpicHasNewStatusWhenAllSubTasksAreNew() {
         Epic epic = taskManager.createEpic(new Epic("Epic3", "descr3"));
@@ -46,7 +47,7 @@ class EpicTest {
         int result1Id = result1.getId();
         taskManager.updateSubTask(new SubTask(result1Id, "ST1", "descr1", Status.DONE, epicId));
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Рассчет статуса эпика при NEW+DONE некорректен");
-        }
+    }
 
     @Test
     void EpicHasInProgressStatusWhenSubTasksAreInProgress() {
@@ -60,6 +61,7 @@ class EpicTest {
         taskManager.updateSubTask(new SubTask(result2Id, "ST2", "descr2", Status.IN_PROGRESS, epicId));
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Рассчет статуса эпика при IN_PROGRESS некорректен");
     }
+
     @Test
     void EpicHasDoneStatusWhenAllSubTasksAreDone() {
         Epic epic = taskManager.createEpic(new Epic("Epic6", "descr6"));

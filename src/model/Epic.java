@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
@@ -8,17 +9,19 @@ public class Epic extends Task {
 
     public Epic(String name, String description) {
         super(name, description);
+        setType(Type.EPIC);
     }
 
     public Epic(int id, String name, String description) {
         super(id, name, description);
+        setType(Type.EPIC);
     }
 
     public void addSubTask(Integer subTaskId) {
         subTasks.add(subTaskId);
     }
 
-    public ArrayList<Integer> getSubTasks() {
+    public List<Integer> getSubTasks() {
         return subTasks;
     }
 
@@ -31,9 +34,13 @@ public class Epic extends Task {
     }
 
     @Override
+    public Type getType() {
+        return type;
+    }
+
+    @Override
     public String toString() {
-        return (getId() + ", \'" + getName() + "\', " +
-                "описание: \'" + getDescription() + "\', статус: \'" + getStatus() + "\'");
+        return (getId() + "," + getType() + "," + getName() + "," + status.getStatus() + "," + getDescription());
     }
 
     @Override
@@ -53,7 +60,7 @@ public class Epic extends Task {
         if (getName() != null) {
             hash = hash + getName().hashCode();
         }
-        hash = hash*31;
+        hash = hash * 31;
         if (getDescription() != null) {
             hash = hash + getDescription().hashCode();
         }

@@ -1,5 +1,5 @@
-import manager.Managers;
-import manager.TaskManager;
+package manager;
+
 import model.Epic;
 import model.Status;
 import model.SubTask;
@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +17,7 @@ class InMemoryTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() {
-     taskManager = Managers.getDefault();
+        taskManager = Managers.getDefault();
     }
 
     @Test
@@ -24,16 +25,17 @@ class InMemoryTaskManagerTest {
         Epic epic = taskManager.createEpic(new Epic("Epic1", "descr1"));
         SubTask subTask = taskManager.createSubTask(new SubTask("ST1", "STdescr", epic.getId()));
         int epicId = epic.getId();
-        SubTask epicTest =  new SubTask(epicId,"Epic1", "descr1", Status.NEW, epicId);
+        SubTask epicTest = new SubTask(epicId, "Epic1", "descr1", Status.NEW, epicId);
         taskManager.updateSubTask(epicTest);
         assertNull(taskManager.getSubTaskById(epicId), "Model.Epic нельзя добавить в самого себя в виде подзадачи");
     }
+
     @Test
     void canNotAddSubTaskAsItsEpic() {
         Epic epic = taskManager.createEpic(new Epic("Model.Epic", "descr"));
         SubTask subTask = taskManager.createSubTask(new SubTask("ST1", "STdescr", epic.getId()));
         int subTaskId = subTask.getId();
-        SubTask subTaskTest = new SubTask(subTaskId, "ST", "STdescr", Status.NEW , subTaskId);
+        SubTask subTaskTest = new SubTask(subTaskId, "ST", "STdescr", Status.NEW, subTaskId);
         assertNull(taskManager.createSubTask(subTaskTest), "Subtask нельзя сделать своим же эпиком");
 
     }
@@ -60,7 +62,7 @@ class InMemoryTaskManagerTest {
         Epic epic = taskManager.createEpic(new Epic("Model.Epic", "Model.Epic.descr"));
         final int epicId = epic.getId();
 
-        final Task savedEpic= taskManager.getEpicById(epicId);
+        final Task savedEpic = taskManager.getEpicById(epicId);
 
         assertNotNull(savedEpic, "Эпик не найден.");
         assertEquals(epic, savedEpic, "Эпики не совпадают.");
@@ -78,12 +80,12 @@ class InMemoryTaskManagerTest {
         SubTask subTask = taskManager.createSubTask(new SubTask("ST", "STdescr", epic.getId()));
         final int subTaskId = subTask.getId();
 
-        ArrayList<Integer> subTasksByEpic = epic.getSubTasks();
+        List<Integer> subTasksByEpic = epic.getSubTasks();
         final int subTaskByEpicId = subTasksByEpic.getFirst();
 
         assertEquals(subTaskId, subTaskByEpicId, "Неверно добавляются id сабтасок в эпики.");
 
-        final Task savedSubTask= taskManager.getSubTaskById(subTaskId);
+        final Task savedSubTask = taskManager.getSubTaskById(subTaskId);
 
         assertNotNull(savedSubTask, "Сабтаска не найдена.");
         assertEquals(subTask, savedSubTask, "Сабтаски не совпадают.");
@@ -135,7 +137,6 @@ class InMemoryTaskManagerTest {
         taskManager.deleteSubTaskById(subTask2Id);
         assertEquals(2, taskManager.getAllSubTasks().size(), "Удаление подзадачи с неактуальным эпиком");
     }
-
 
 
 }

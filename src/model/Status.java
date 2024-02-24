@@ -1,16 +1,18 @@
 package model;
 
-public enum Status{
+public enum Status {
     NEW("Новая"),
     IN_PROGRESS("В процессе"),
     DONE("Завершена");
 
-private String string;
-Status(String name) {
-    string = name;
-}
-    @Override
-    public String toString() {
-        return string;
+    private final String status;
+
+    Status(String name) {
+        status = name;
+    }
+
+
+    public String getStatus() {
+        return status;
     }
 }

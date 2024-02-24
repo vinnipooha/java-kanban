@@ -8,11 +8,13 @@ public class Task {
     protected String name;
     protected String description;
     protected Status status;
+    protected Type type;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+        this.type = Type.TASK;
     }
 
     public Task(int id, String name, String description, Status status) {
@@ -20,12 +22,14 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type = Type.TASK;
     }
 
     public Task(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.type = Type.TASK;
     }
 
     public String getName() {
@@ -60,9 +64,17 @@ public class Task {
         return id;
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
-        return (id + ", \'" + name + "\', " + "описание: \'" + description + "\', статус: \'"+ status + "\'" );
+        return (id + "," + getType()+ "," + name + "," + status.getStatus() + "," + description);
     }
 
     @Override
@@ -77,6 +89,6 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(),getDescription());
+        return Objects.hash(getName(), getDescription());
     }
 }
