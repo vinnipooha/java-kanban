@@ -1,5 +1,8 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -9,6 +12,19 @@ public class Task {
     protected String description;
     protected Status status;
     protected Type type;
+    protected LocalDateTime startTime;
+    protected Duration duration;
+
+    protected DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd_MM_yyy HH:mm");
+
+    public Task (String name, String description, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = Status.NEW;
+        this.type = Type.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
 
     public Task(String name, String description) {
         this.name = name;
@@ -17,12 +33,14 @@ public class Task {
         this.type = Type.TASK;
     }
 
-    public Task(int id, String name, String description, Status status) {
+    public Task(int id, String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.type = Type.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public Task(int id, String name, String description) {
@@ -72,9 +90,37 @@ public class Task {
         this.type = type;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime == null) {
+            return null;
+        }
+        if (duration == null) {
+            return startTime;
+        }
+        return startTime.plus(duration);
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
     @Override
     public String toString() {
-        return (id + "," + getType()+ "," + name + "," + status.getStatus() + "," + description);
+        return (id + "," + getType()+ "," + name + "," + status.getStatus() + "," + description + ","
+                + startTime.format(dateTimeFormatter) + "," + getEndTime().format(dateTimeFormatter)
+                + "," + duration.toMinutes());
     }
 
     @Override
