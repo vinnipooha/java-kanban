@@ -2,14 +2,23 @@ package model;
 
 import manager.Managers;
 import manager.TaskManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EpicTest {
-    TaskManager taskManager = Managers.getDefault();
-
+    TaskManager taskManager;
+    protected LocalDateTime now = LocalDateTime.now();
+    protected Duration duration = Duration.ofMinutes(9);
+    @BeforeEach
+    public void beforeEach() {
+        taskManager = Managers.getDefault();
+    }
     @Test
     void EpicsAreEqualIfTheirIdIsEqual() {
         Epic epic = new Epic("Epic1", "description1");
@@ -31,8 +40,8 @@ class EpicTest {
     void EpicHasNewStatusWhenAllSubTasksAreNew() {
         Epic epic = taskManager.createEpic(new Epic("Epic3", "descr3"));
         int epicId = epic.getId();
-        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
-        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
+        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId, now, duration));
+        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId, now.plusMinutes(10), duration));
         assertEquals(Status.NEW, result1.getStatus());
         assertEquals(Status.NEW, result2.getStatus());
         assertEquals(Status.NEW, epic.getStatus(), "Рассчет статуса эпика при новых сабтасках некорректна");
@@ -42,10 +51,9 @@ class EpicTest {
     void EpicHasInProgressStatusWhenSubTasksAreNewAndDone() {
         Epic epic = taskManager.createEpic(new Epic("Epic4", "descr4"));
         int epicId = epic.getId();
-        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
-        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
-        int result1Id = result1.getId();
-        taskManager.updateSubTask(new SubTask(result1Id, "ST1", "descr1", Status.DONE, epicId));
+        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId, now, duration));
+        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId, now.plusMinutes(10), duration));
+        taskManager.updateSubTask(new SubTask(2, "ST1", "descr1", Status.DONE, epicId, now, duration));
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Рассчет статуса эпика при NEW+DONE некорректен");
     }
 
@@ -53,12 +61,12 @@ class EpicTest {
     void EpicHasInProgressStatusWhenSubTasksAreInProgress() {
         Epic epic = taskManager.createEpic(new Epic("Epic5", "descr5"));
         int epicId = epic.getId();
-        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
-        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
+        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId, now, duration));
+        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId, now.plusMinutes(10), duration));
         int result1Id = result1.getId();
         int result2Id = result2.getId();
-        taskManager.updateSubTask(new SubTask(result1Id, "ST1", "descr1", Status.IN_PROGRESS, epicId));
-        taskManager.updateSubTask(new SubTask(result2Id, "ST2", "descr2", Status.IN_PROGRESS, epicId));
+        taskManager.updateSubTask(new SubTask(result1Id, "ST1", "descr1", Status.IN_PROGRESS, epicId, now, duration));
+        taskManager.updateSubTask(new SubTask(result2Id, "ST2", "descr2", Status.IN_PROGRESS, epicId, now.plusMinutes(10), duration));
         assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Рассчет статуса эпика при IN_PROGRESS некорректен");
     }
 
@@ -66,12 +74,12 @@ class EpicTest {
     void EpicHasDoneStatusWhenAllSubTasksAreDone() {
         Epic epic = taskManager.createEpic(new Epic("Epic6", "descr6"));
         int epicId = epic.getId();
-        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
-        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
+        SubTask result1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId, now, duration));
+        SubTask result2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId, now.plusMinutes(10), duration));
         int result1Id = result1.getId();
         int result2Id = result2.getId();
-        taskManager.updateSubTask(new SubTask(result1Id, "ST1", "descr1", Status.DONE, epicId));
-        taskManager.updateSubTask(new SubTask(result2Id, "ST2", "descr2", Status.DONE, epicId));
+        taskManager.updateSubTask(new SubTask(result1Id, "ST1", "descr1", Status.DONE, epicId, now, duration));
+        taskManager.updateSubTask(new SubTask(result2Id, "ST2", "descr2", Status.DONE, epicId, now.plusMinutes(10), duration));
         assertEquals(Status.DONE, epic.getStatus(), "Рассчет статуса эпика при выполненных сабтасках неверен");
     }
 }

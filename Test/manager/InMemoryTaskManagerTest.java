@@ -7,136 +7,31 @@ import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTaskManagerTest {
-    protected TaskManager taskManager;
+class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @BeforeEach
     public void beforeEach() {
-        taskManager = Managers.getDefault();
+        taskManager = new InMemoryTaskManager(Managers.getDefaultHistory());
     }
 
     @Test
-    void canNotAddEpicAsItsSubtask() {
-        Epic epic = taskManager.createEpic(new Epic("Epic1", "descr1"));
-        SubTask subTask = taskManager.createSubTask(new SubTask("ST1", "STdescr", epic.getId()));
-        int epicId = epic.getId();
-        SubTask epicTest = new SubTask(epicId, "Epic1", "descr1", Status.NEW, epicId);
-        taskManager.updateSubTask(epicTest);
-        assertNull(taskManager.getSubTaskById(epicId), "Model.Epic нельзя добавить в самого себя в виде подзадачи");
+    void shouldNotNotAddTaskIfItIntersects() {
+        Task task1 = taskManager.createTask(new Task("Task1", "T_descr1", now, duration));
+        Task task2 = taskManager.createTask(new Task("Task2", "T_descr2", now.plusMinutes(10), duration));
+        Task task3 = taskManager.createTask(new Task("Task3", "T_descr3", now.plusMinutes(5), duration));
+        Task task4 = taskManager.createTask(new Task("Task4", "T_descr4", now, duration));
+        Task task5 = taskManager.createTask(new Task("Task5", "T_descr5", now.minusMinutes(5), duration.plusMinutes(6)));
+
+        assertEquals(2, taskManager.tasks.size(), "Проверка на пересечение задач не работает");
+        assertFalse(taskManager.tasks.containsKey(3) && taskManager.tasks.containsKey(4) &&
+                taskManager.tasks.containsKey(5), "Отбраковка пересекающихся задач не работает");
     }
-
-    @Test
-    void canNotAddSubTaskAsItsEpic() {
-        Epic epic = taskManager.createEpic(new Epic("Model.Epic", "descr"));
-        SubTask subTask = taskManager.createSubTask(new SubTask("ST1", "STdescr", epic.getId()));
-        int subTaskId = subTask.getId();
-        SubTask subTaskTest = new SubTask(subTaskId, "ST", "STdescr", Status.NEW, subTaskId);
-        assertNull(taskManager.createSubTask(subTaskTest), "Subtask нельзя сделать своим же эпиком");
-
-    }
-
-    @Test
-    void shouldCreateNewTaskAndSearchById() {
-        Task task = taskManager.createTask(new Task("Model.Task", "Model.Task.descr"));
-        final int taskId = task.getId();
-
-        final Task savedTask = taskManager.getTaskById(taskId);
-
-        assertNotNull(savedTask, "Задача не найдена.");
-        assertEquals(task, savedTask, "Задачи не совпадают.");
-
-        final ArrayList<Task> tasks = taskManager.getAllTasks();
-
-        assertNotNull(tasks, "Задачи не возвращаются.");
-        assertEquals(1, tasks.size(), "Неверное количество задач.");
-        assertEquals(task, tasks.getFirst(), "Задачи не совпадают.");
-    }
-
-    @Test
-    void shouldCreateNewEpicAndSearchById() {
-        Epic epic = taskManager.createEpic(new Epic("Model.Epic", "Model.Epic.descr"));
-        final int epicId = epic.getId();
-
-        final Task savedEpic = taskManager.getEpicById(epicId);
-
-        assertNotNull(savedEpic, "Эпик не найден.");
-        assertEquals(epic, savedEpic, "Эпики не совпадают.");
-
-        final ArrayList<Epic> epics = taskManager.getAllEpics();
-
-        assertNotNull(epics, "Задачи не возвращаются.");
-        assertEquals(1, epics.size(), "Неверное количество задач.");
-        assertEquals(epic, epics.getFirst(), "Задачи не совпадают.");
-    }
-
-    @Test
-    void shouldCreateNewSubTaskAndSearchById() {
-        Epic epic = taskManager.createEpic(new Epic("Model.Epic", "Model.Epic.descr"));
-        SubTask subTask = taskManager.createSubTask(new SubTask("ST", "STdescr", epic.getId()));
-        final int subTaskId = subTask.getId();
-
-        List<Integer> subTasksByEpic = epic.getSubTasks();
-        final int subTaskByEpicId = subTasksByEpic.getFirst();
-
-        assertEquals(subTaskId, subTaskByEpicId, "Неверно добавляются id сабтасок в эпики.");
-
-        final Task savedSubTask = taskManager.getSubTaskById(subTaskId);
-
-        assertNotNull(savedSubTask, "Сабтаска не найдена.");
-        assertEquals(subTask, savedSubTask, "Сабтаски не совпадают.");
-
-        final ArrayList<SubTask> subTasks = taskManager.getAllSubTasks();
-
-        assertNotNull(subTasks, "Задачи не возвращаются.");
-        assertEquals(1, subTasks.size(), "Неверное количество задач.");
-        assertEquals(subTask, subTasks.getFirst(), "Задачи не совпадают.");
-    }
-
-    @Test
-    void tasksWhithTheSpecifiedAndGeneratedIdDoNotConflict() {
-        Task task1 = taskManager.createTask(new Task("Task1", "Model.Task.descr1"));
-        assertEquals(1, task1.getId(), "У первой задачи id должен быть равен 1");
-        Task task2 = taskManager.createTask(new Task(2, "Task2", "Model.Task.descr2", Status.NEW));
-        assertEquals(2, task2.getId(), "У второй задачи id должен быть равен 2");
-        assertEquals(2, taskManager.getAllTasks().size(), "Задачи с заданным id менеджер не может обработать");
-        Task task3 = new Task(1, "Task3", "Model.Task.descr3", Status.NEW);
-        Task taskSaved = taskManager.createTask(task3);
-        assertEquals(3, taskSaved.getId(), "Задача с заданным id затирает созданную ранее задачу с таким же id");
-        assertEquals(task1, taskManager.getAllTasks().getFirst(), "Первая задача (со сгенерированным id) добавлена первой в список");
-        assertEquals(task2, taskManager.getAllTasks().get(1), "Вторая задача (с заданным id) добавлена второй в список");
-    }
-
-    @Test
-    void epicShouldNotContainIrrelevantSubtasks() {
-        Epic epic = taskManager.createEpic(new Epic("Epic", "descr"));
-        int epicId = epic.getId();
-        SubTask subTask1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
-        SubTask subTask2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
-
-        int result1Id = subTask1.getId();
-        taskManager.deleteSubTaskById(result1Id);
-
-        assertEquals(1, taskManager.getSubTasksByEpic(epicId).size(), "Удаление подзадач из эпика не работает");
-        assertFalse(taskManager.getSubTasksByEpic(epicId).contains(subTask1), "Внутри эпика неактуальный id подзадачи");
-    }
-
-    @Test
-    void subTaskForDeleteShouldNotContainIrrelevantId() {
-        Epic epic = taskManager.createEpic(new Epic("Epic", "descr"));
-        int epicId = epic.getId();
-        SubTask subTask1 = taskManager.createSubTask(new SubTask("ST1", "descr1", epicId));
-        SubTask subTask2 = taskManager.createSubTask(new SubTask("ST2", "descr2", epicId));
-        int subTask2Id = subTask2.getId();
-        subTask2.setEpicId(3);
-
-        taskManager.deleteSubTaskById(subTask2Id);
-        assertEquals(2, taskManager.getAllSubTasks().size(), "Удаление подзадачи с неактуальным эпиком");
-    }
-
 
 }

@@ -25,37 +25,41 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         FileBackedTaskManager fileManager = new FileBackedTaskManager(Paths.get("sourses/saveTasksTest.csv"));
-        fileManager.createTask(new Task("Task1", "T_descr"));
+        LocalDateTime timeStart = LocalDateTime.now();
+        Duration duration = Duration.ofMinutes(9);
+        fileManager.createTask(new Task("Task1", "T_descr", timeStart, duration));
         fileManager.createEpic(new Epic("Epic1", "E_descr1"));
-        fileManager.createSubTask(new SubTask("ST1", "ST_descr1", 2, LocalDateTime.now(), Duration.ofMinutes(60)));
-        fileManager.createSubTask(new SubTask("ST2", "ST_descr2", 2, LocalDateTime.now().plusHours(2), Duration.ofMinutes(15)));
+        fileManager.createSubTask(new SubTask("ST1", "ST_descr1", 2,
+                timeStart.minusMinutes(10), duration));
+        fileManager.createSubTask(new SubTask("ST2", "ST_descr2", 2,
+                timeStart.minusMinutes(20), duration));
 
         fileManager.getTaskById(1);
         fileManager.getEpicById(2);
         fileManager.getSubTaskById(3);
 
-        System.out.println(fileManager.getAllTasks());
-        System.out.println(fileManager.getAllEpics());
-        System.out.println(fileManager.getAllSubTasks());
+        fileManager.getAllTasks().forEach(System.out::println);
+        fileManager.getAllEpics().forEach(System.out::println);
+        fileManager.getAllSubTasks().forEach(System.out::println);
         System.out.println("История:");
-        System.out.println(fileManager.getHistory());
+        fileManager.getHistory().forEach(System.out::println);
         System.out.println("Приоритеты:");
-        //System.out.println(fileManager.getPrioritizedTasks());
+        fileManager.getPrioritizedTasks().forEach(System.out::println);
 
-        System.out.println("\n" + "new" + "\n");
+        System.out.println("\n" + "-----new-----" + "\n");
 
         FileBackedTaskManager fileManagerToLoad = loadFromFile(Paths.get("sourses/saveTasksTest.csv"));
 
-        System.out.println(fileManagerToLoad.getAllTasks());
-        System.out.println(fileManagerToLoad.getAllEpics());
-        System.out.println(fileManagerToLoad.getAllSubTasks());
+        fileManagerToLoad.getAllTasks().forEach(System.out::println);
+        fileManagerToLoad.getAllEpics().forEach(System.out::println);
+        fileManagerToLoad.getAllSubTasks().forEach(System.out::println);
         System.out.println("История:");
-        System.out.println(fileManagerToLoad.getHistory());
+        fileManagerToLoad.getHistory().forEach(System.out::println);
         System.out.println("Приоритеты:");
-        //System.out.println(fileManagerToLoad.getPrioritizedTasks());
+        fileManagerToLoad.getPrioritizedTasks().forEach(System.out::println);
     }
 
-    private void save() {
+    private void save() throws ManagerSaveException {
         try (FileWriter fileWriter = new FileWriter(path.toString(), StandardCharsets.UTF_8)) {
             fileWriter.write(HEADER);
             for (Integer key : tasks.keySet()) {
@@ -82,7 +86,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return fileBakedManager;
     }
 
-    private void load() {
+    private void load() throws RuntimeException {
         int maxId = 0; // Для актуализации значений счетчика
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toString()))) {
             bufferedReader.readLine();  //прочитали заголовок

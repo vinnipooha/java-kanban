@@ -30,8 +30,7 @@ public class SubTask extends Task {
     @Override
     public String toString() {
         return (getId() + "," + getType()+ "," + getName() + "," + status.getStatus() + "," + getDescription() + ","
-                + getStartTime().format(dateTimeFormatter) + "," + getEndTime().format(dateTimeFormatter)
-                + "," + duration.toMinutes() + "," + epicId);
+                + getStartTime().format(formatter) + "," + getDuration() + "," + epicId);
     }
 
 

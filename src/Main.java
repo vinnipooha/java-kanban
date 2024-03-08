@@ -48,37 +48,27 @@ public class Main {
 
     private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
-        for (Task task : manager.getAllTasks()) {
-            System.out.println(task);
-        }
-        System.out.println("Эпики:");
-        for (Task epic : manager.getAllEpics()) {
-            System.out.println(epic);
+        manager.getAllTasks().forEach(System.out::println);
 
-            for (Task task : manager.getSubTasksByEpic(epic.getId())) {
-                System.out.println("--> " + task);
-            }
-        }
+        System.out.println("Эпики:");
+        manager.getAllEpics().forEach(epic -> {
+            System.out.println(epic);
+            manager.getSubTasksByEpic(epic.getId()).stream().map(task -> "--> " + task).forEach(System.out::println);
+        });
         System.out.println("Подзадачи:");
-        for (Task subtask : manager.getAllSubTasks()) {
-            System.out.println(subtask);
-        }
+        manager.getAllSubTasks().forEach(System.out::println);
 
         System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
+        manager.getHistory().forEach(System.out::println);
 
         System.out.println("Приоритет:");
-        System.out.println(manager.getPrioritizedTasks());
+        manager.getPrioritizedTasks().forEach(System.out::println);
         System.out.println();
     }
 
     private static void printHistory(TaskManager manager) {
         System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
+        manager.getHistory().forEach(System.out::println);
         System.out.println();
     }
 }

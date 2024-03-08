@@ -3,6 +3,8 @@ package manager;
 import model.*;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class InMemoryHistoryManagerTest {
 
     HistoryManager historyManager;
-
+    LocalDateTime now = LocalDateTime.now();
+    Duration duration = Duration.ofMinutes(9);
     @Test
     void shouldDeleteThePreviousTaskView() {
         historyManager = Managers.getDefaultHistory();
 
-        Task task = new Task(1, "T1", "descr1");
+        Task task = new Task(1, "T1", "descr1", Status.NEW, now, duration);
         Epic epic = new Epic(2, "Epic", "Epic.descr");
-        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2);
+        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2, now.plusMinutes(10), duration);
 
         historyManager.add(task);
         historyManager.add(epic);
@@ -36,7 +39,7 @@ class InMemoryHistoryManagerTest {
 
         historyManager.remove(3);
         assertEquals(2, historyManager.getHistory().size(), "Удаление просмотров не работает");
-        assertFalse(historyManager.getHistory().contains(subTask), "");
+        assertFalse(historyManager.getHistory().contains(subTask), "subTask не должно быть в списке");
         assertEquals(2, historyManager.getHistory().get(0).getId(), "task должна быть первым элементом в списке");
         assertEquals(1, historyManager.getHistory().get(1).getId(), "epic должен быть вторым элементом в списке");
     }
@@ -44,9 +47,10 @@ class InMemoryHistoryManagerTest {
     @Test
     void shouldRemoveNodeForId() {
         historyManager = Managers.getDefaultHistory();
-        Task task = new Task(1, "T1", "descr1");
+        Task task = new Task(1, "T1", "descr1", Status.NEW, now, duration);
         Epic epic = new Epic(2, "Epic", "Epic.descr");
-        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2);
+        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2, now.plusMinutes(10), duration);
+
 
         historyManager.add(task);
         historyManager.add(epic);
@@ -63,9 +67,10 @@ class InMemoryHistoryManagerTest {
     void shouldAddNodeInOrder() {
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
-        Task task = new Task(1, "T1", "descr1");
+        Task task = new Task(1, "T1", "descr1", Status.NEW, now, duration);
         Epic epic = new Epic(2, "Epic", "Epic.descr");
-        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2);
+        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2, now.plusMinutes(10), duration);
+
 
         inMemoryHistoryManager.linkLast(task);
         inMemoryHistoryManager.linkLast(epic);
@@ -85,9 +90,10 @@ class InMemoryHistoryManagerTest {
     void ShouldChangeHeadWhenDeleteFirstNode() {
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
-        Task task = new Task(1, "T1", "descr1");
+        Task task = new Task(1, "T1", "descr1", Status.NEW, now, duration);
         Epic epic = new Epic(2, "Epic", "Epic.descr");
-        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2);
+        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2, now.plusMinutes(10), duration);
+
 
         inMemoryHistoryManager.linkLast(task);
         inMemoryHistoryManager.linkLast(epic);
@@ -102,9 +108,10 @@ class InMemoryHistoryManagerTest {
     void ShouldChangeTailWhenDeleteLastNode() {
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
-        Task task = new Task(1, "T1", "descr1");
+        Task task = new Task(1, "T1", "descr1", Status.NEW, now, duration);
         Epic epic = new Epic(2, "Epic", "Epic.descr");
-        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2);
+        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2, now.plusMinutes(10), duration);
+
 
         inMemoryHistoryManager.linkLast(task);
         inMemoryHistoryManager.linkLast(epic);
@@ -119,9 +126,9 @@ class InMemoryHistoryManagerTest {
     void removeNode() {
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
-        Task task = new Task(1, "T1", "descr1");
+        Task task = new Task(1, "T1", "descr1", Status.NEW, now, duration);
         Epic epic = new Epic(2, "Epic", "Epic.descr");
-        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2);
+        SubTask subTask = new SubTask(3, "ST", "STdescr", Status.NEW, 2, now.plusMinutes(10), duration);
 
         inMemoryHistoryManager.linkLast(task);
         inMemoryHistoryManager.linkLast(epic);
@@ -147,7 +154,7 @@ class InMemoryHistoryManagerTest {
     void removeNodeWhenItIsAlone() {
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
-        Task task = new Task(1, "T1", "descr1");
+        Task task = new Task(1, "T1", "descr1", Status.NEW, now, duration);
         inMemoryHistoryManager.linkLast(task);
 
         List<Task> list = inMemoryHistoryManager.getHistory();
