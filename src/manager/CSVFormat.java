@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVFormat {
-    static Task taskFromString(String value) throws RuntimeException {
+    public static Task taskFromString(String value) throws RuntimeException {
         String[] columns = value.split(",");
         int id = Integer.parseInt(columns[0]);
 

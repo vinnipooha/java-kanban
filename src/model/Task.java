@@ -26,13 +26,6 @@ public class Task {
         this.duration = duration;
     }
 
-//    public Task(String name, String description) {
-//        this.name = name;
-//        this.description = description;
-//        this.status = Status.NEW;
-//        this.type = Type.TASK;
-//    }
-
     public Task(int id, String name, String description, Status status, LocalDateTime startTime, Duration duration) {
         this.id = id;
         this.name = name;
@@ -45,13 +38,6 @@ public class Task {
 
     public Task() {
     }
-
-//    public Task(int id, String name, String description) {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.type = Type.TASK;
-//    }
 
     public String getName() {
         return name;

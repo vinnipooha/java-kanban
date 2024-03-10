@@ -30,7 +30,7 @@ public class InMemoryTaskManager implements TaskManager {
         this.prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime, Comparator.nullsFirst(naturalOrder())).thenComparing(Task::getId));
     }
 
-    public boolean isIntersect(Task task) {
+    private boolean isIntersect(Task task) {
         if (prioritizedTasks.isEmpty()) {
             return false;
         }
