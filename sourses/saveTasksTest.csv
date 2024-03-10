@@ -1,0 +1,7 @@
+id,type,name,status,description,startTime,duration,epic
+1,TASK,Task1,Новая,T_descr,08_03_2024 01:11,PT9M
+2,EPIC,Epic1,Новая,E_descr1,2024-03-08T00:51:40.881371200,PT18M
+3,SUBTASK,ST1,Новая,ST_descr1,08_03_2024 01:01,PT9M,2
+4,SUBTASK,ST2,Новая,ST_descr2,08_03_2024 00:51,PT9M,2
+
+3,2,1
