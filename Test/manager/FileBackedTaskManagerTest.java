@@ -7,10 +7,7 @@ import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,13 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
-    protected Path tempFile;
+    protected Path tempPath;
 
     @BeforeEach
     void beforeEach() throws IOException {
         try {
-            tempFile = Files.createTempFile("test-", ".tmp");
-            taskManager = new FileBackedTaskManager(tempFile);
+            File tempFile = File.createTempFile("test-", ".tmp");
+            tempPath = tempFile.toPath();
+            tempFile.deleteOnExit();
+            taskManager = new FileBackedTaskManager(tempPath);
         } catch (IOException e) {
             throw new IOException("Произошла ошибка создания файла");
         }
@@ -34,12 +33,12 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     @Test
     void shouldSaveAndLoadIsEmptyFile() throws IOException {
 
-        assertTrue(Files.exists(tempFile), "Файл для записи данных не был создан");
+        assertTrue(Files.exists(tempPath), "Файл для записи данных не был создан");
 
         try {
-            String contentsOfTheFile = Files.readString(tempFile);
+            String contentsOfTheFile = Files.readString(tempPath);
             assertTrue(contentsOfTheFile.isEmpty(), "После создания менеджера файл должен быть пустым");
-            FileBackedTaskManager fileManagerTest = FileBackedTaskManager.loadFromFile(tempFile);
+            FileBackedTaskManager fileManagerTest = FileBackedTaskManager.loadFromFile(tempPath);
             assertNotNull(fileManagerTest, "Загрузка из пустого файла не сработала");
             assertTrue(fileManagerTest.getAllTasks().isEmpty(), "После загрузки из пустого файла список задач должен быть пустым");
             assertTrue(fileManagerTest.getAllEpics().isEmpty(), "После загрузки из пустого файла список эпиков должен быть пустым");
@@ -59,9 +58,9 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         SubTask subTask2 = taskManager.createSubTask(new SubTask("ST2", "ST2_descr", 2, now.plusMinutes(20), duration));
         SubTask subTask3 = taskManager.createSubTask(new SubTask("ST3", "ST3_descr", 3, now.plusMinutes(30), duration));
 
-        assertTrue(Files.exists(tempFile), "Файл для хранения данных не был создан");
+        assertTrue(Files.exists(tempPath), "Файл для хранения данных не был создан");
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(tempFile.toString()))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(tempPath.toString()))) {
             String line = reader.readLine();
             assertEquals("id,type,name,status,description,startTime,duration,epic", line, "Первой строкой должен быть заголовок");
             for (int i = 1; i <= 6; i++) {
@@ -86,7 +85,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         taskManager.getEpicById(2);
         taskManager.getSubTaskById(3);
 
-        FileBackedTaskManager fileManagerToTest = FileBackedTaskManager.loadFromFile(tempFile);
+        FileBackedTaskManager fileManagerToTest = FileBackedTaskManager.loadFromFile(tempPath);
         assertNotNull(fileManagerToTest, "Ошибка при создании менеджера");
         assertEquals(1, fileManagerToTest.getAllTasks().size(), "Ошибка загрузки тасок");
         assertEquals(2, fileManagerToTest.getAllEpics().size(), "Ошибка загрузки эпиков");

@@ -5,6 +5,7 @@ import model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -23,7 +24,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FileBackedTaskManager fileManager = new FileBackedTaskManager(Paths.get("sourses/saveTasksTest.csv"));
         LocalDateTime timeStart = LocalDateTime.now();
         Duration duration = Duration.ofMinutes(9);
@@ -57,6 +58,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         fileManagerToLoad.getHistory().forEach(System.out::println);
         System.out.println("Приоритеты:");
         fileManagerToLoad.getPrioritizedTasks().forEach(System.out::println);
+        try {
+            Files.delete(Paths.get("sourses/saveTasksTest.csv"));
+        } catch (IOException e) {
+            throw new FileNotFoundException("Файл, предназначенный для удаления, не найден");
+        }
     }
 
     private void save() throws ManagerSaveException {
