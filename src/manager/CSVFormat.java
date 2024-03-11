@@ -3,11 +3,14 @@ package manager;
 import exceptions.ManagerSaveException;
 import model.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSVFormat {
-     static Task taskFromString(String value) throws RuntimeException {
+    public static Task taskFromString(String value) throws RuntimeException {
         String[] columns = value.split(",");
         int id = Integer.parseInt(columns[0]);
 
@@ -26,16 +29,28 @@ public class CSVFormat {
 
         switch (type) {
             case TASK:
-                task = new Task(id, columns[2], columns[4], status);
+                task = new Task(id, columns[2], columns[4], status, LocalDateTime.parse(columns[5], DateTimeFormatter.ofPattern("dd_MM_yyy HH:mm")),
+                        Duration.parse(columns[6]));
                 break;
 
             case EPIC:
                 task = new Epic(id, columns[2], columns[4]);
                 task.setStatus(status);
+                if (!columns[6].equals("null")) {
+                    task.setStartTime(LocalDateTime.parse(columns[5]));
+                } else {
+                    task.setStartTime(null);
+                }
+                if (!columns[6].equals("null")) {
+                    task.setDuration(Duration.parse(columns[6]));
+                } else {
+                    task.setDuration(null);
+                }
                 break;
 
             case SUBTASK:
-                task = new SubTask(id, columns[2], columns[4], status, Integer.parseInt(columns[5]));
+                task = new SubTask(id, columns[2], columns[4], status, Integer.parseInt(columns[7]), LocalDateTime.parse(columns[5], DateTimeFormatter.ofPattern("dd_MM_yyy HH:mm")),
+                        Duration.parse(columns[6]));
                 break;
 
             default:

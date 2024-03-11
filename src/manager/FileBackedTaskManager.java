@@ -5,15 +5,18 @@ import model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static manager.CSVFormat.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     protected Path path;
-    static final String HEADER = "id,type,name,status,description,epic\n";
+    static final String HEADER = "id,type,name,status,description,startTime,duration,epic\n";
 
     public FileBackedTaskManager(Path path) {
         super(Managers.getDefaultHistory());
@@ -21,35 +24,48 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FileBackedTaskManager fileManager = new FileBackedTaskManager(Paths.get("sourses/saveTasksTest.csv"));
-        fileManager.createTask(new Task("Task1", "T_descr"));
+        LocalDateTime timeStart = LocalDateTime.now();
+        Duration duration = Duration.ofMinutes(9);
+        fileManager.createTask(new Task("Task1", "T_descr", timeStart, duration));
         fileManager.createEpic(new Epic("Epic1", "E_descr1"));
-        fileManager.createSubTask(new SubTask("ST1", "ST_descr1", 2));
-        fileManager.createSubTask(new SubTask("ST2", "ST_descr2", 2));
+        fileManager.createSubTask(new SubTask("ST1", "ST_descr1", 2,
+                timeStart.minusMinutes(10), duration));
+        fileManager.createSubTask(new SubTask("ST2", "ST_descr2", 2,
+                timeStart.minusMinutes(20), duration));
 
         fileManager.getTaskById(1);
         fileManager.getEpicById(2);
         fileManager.getSubTaskById(3);
 
-        System.out.println(fileManager.getAllTasks());
-        System.out.println(fileManager.getAllEpics());
-        System.out.println(fileManager.getAllSubTasks());
+        fileManager.getAllTasks().forEach(System.out::println);
+        fileManager.getAllEpics().forEach(System.out::println);
+        fileManager.getAllSubTasks().forEach(System.out::println);
         System.out.println("История:");
-        System.out.println(fileManager.getHistory());
+        fileManager.getHistory().forEach(System.out::println);
+        System.out.println("Приоритеты:");
+        fileManager.getPrioritizedTasks().forEach(System.out::println);
 
-        System.out.println("\n" + "new" + "\n");
+        System.out.println("\n" + "-----new-----" + "\n");
 
         FileBackedTaskManager fileManagerToLoad = loadFromFile(Paths.get("sourses/saveTasksTest.csv"));
 
-        System.out.println(fileManagerToLoad.getAllTasks());
-        System.out.println(fileManagerToLoad.getAllEpics());
-        System.out.println(fileManagerToLoad.getAllSubTasks());
+        fileManagerToLoad.getAllTasks().forEach(System.out::println);
+        fileManagerToLoad.getAllEpics().forEach(System.out::println);
+        fileManagerToLoad.getAllSubTasks().forEach(System.out::println);
         System.out.println("История:");
-        System.out.println(fileManagerToLoad.getHistory());
+        fileManagerToLoad.getHistory().forEach(System.out::println);
+        System.out.println("Приоритеты:");
+        fileManagerToLoad.getPrioritizedTasks().forEach(System.out::println);
+        try {
+            Files.delete(Paths.get("sourses/saveTasksTest.csv"));
+        } catch (IOException e) {
+            throw new FileNotFoundException("Файл, предназначенный для удаления, не найден");
+        }
     }
 
-    private void save() {
+    private void save() throws ManagerSaveException {
         try (FileWriter fileWriter = new FileWriter(path.toString(), StandardCharsets.UTF_8)) {
             fileWriter.write(HEADER);
             for (Integer key : tasks.keySet()) {
@@ -76,7 +92,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return fileBakedManager;
     }
 
-    private void load() {
+    private void load() throws RuntimeException {
+        int maxId = 0; // Для актуализации значений счетчика
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toString()))) {
             bufferedReader.readLine();  //прочитали заголовок
             while (true) {
@@ -91,6 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 switch (task.getType()) {
                     case TASK:
                         tasks.put(id, task);
+                        if (task.getStartTime() != null) prioritizedTasks.add(task);
                         break;
                     case EPIC:
                         epics.put(id, (Epic) task);
@@ -99,7 +117,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         subTasks.put(id, (SubTask) task);
                         Epic epic = epics.get(subTasks.get(id).getEpicId());
                         epic.addSubTask(id);
+                        if (task.getStartTime() != null) prioritizedTasks.add(task);
                         break;
+                }
+                if (maxId < id) {
+                    maxId = id;
                 }
             }
             String line = bufferedReader.readLine(); //прочитали строку истории
@@ -122,6 +144,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw new RuntimeException("Ошибка чтения из файла", e);
         }
+        setId(maxId);
     }
 
     @Override
