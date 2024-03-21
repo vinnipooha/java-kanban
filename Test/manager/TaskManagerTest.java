@@ -193,7 +193,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void tasksWhithTheSpecifiedAndGeneratedIdDoNotConflict() {
+    void tasksWithTheSpecifiedAndGeneratedIdDoNotConflict() {
         Task task1 = taskManager.createTask(new Task("Task1", "Model.Task.descr1", now, duration));
         assertEquals(1, task1.getId(), "У первой задачи id должен быть равен 1");
         Task task2 = taskManager.createTask(new Task(2, "Task2", "Model.Task.descr2", Status.NEW, now.plusMinutes(10), duration));
