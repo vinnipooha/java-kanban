@@ -1,7 +1,5 @@
 package manager;
 
-import com.google.gson.Gson;
-
 import java.nio.file.Paths;
 
 public final class Managers {

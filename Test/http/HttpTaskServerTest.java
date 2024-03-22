@@ -8,7 +8,9 @@ import model.Epic;
 import model.Status;
 import model.SubTask;
 import model.Task;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
@@ -164,7 +166,6 @@ class HttpTaskServerTest {
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
     }
-////----------------------------------------------------------------------------------------
 
     @Test
     void SubTask_GetRequestToPathSubtasksShouldReturnListWithSingleSubTask() {
@@ -301,8 +302,6 @@ class HttpTaskServerTest {
         }
     }
 
-    ////------------------------------------------------------------------------------------------------
-
     @Test
     void Epic_GetRequestToPathEpicsShouldReturnListWithSingleEpic() {
         Epic epic = taskManager.createEpic(new Epic("Epic", "E_descr"));
@@ -373,6 +372,7 @@ class HttpTaskServerTest {
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
     }
+
     @Test
     void Epic_PostRequestToPathWithoutQueryShouldCreateEpic() {
         LocalDateTime startTime = LocalDateTime.now();
@@ -515,5 +515,4 @@ class HttpTaskServerTest {
                     "Проверьте, пожалуйста, адрес и повторите попытку.");
         }
     }
-
 }

@@ -6,14 +6,12 @@ import com.sun.net.httpserver.HttpHandler;
 import http.HttpTaskServer;
 import manager.TaskManager;
 import model.Epic;
-import model.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
 
 public class EpicHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;

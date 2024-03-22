@@ -1,4 +1,6 @@
 package http;
+
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import http.adapter.DurationAdapter;
@@ -6,7 +8,7 @@ import http.adapter.LocalDateTimeAdapter;
 import http.handler.*;
 import manager.Managers;
 import manager.TaskManager;
-import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -21,11 +23,8 @@ public class HttpTaskServer {
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .create();
 
-
-
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.taskManager = taskManager;
-
         this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext("/tasks", new TaskHandler(taskManager));
         server.createContext("/subtasks", new SubTaskHandler(taskManager));
@@ -47,12 +46,9 @@ public class HttpTaskServer {
     }
 
     public static void main(String[] args) throws IOException {
-
         HttpTaskServer taskServer = new HttpTaskServer(Managers.getDefaultInMemoryManager());
         taskServer.startServer();
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
-
-//        taskServer.stopServer();
     }
 }
 
