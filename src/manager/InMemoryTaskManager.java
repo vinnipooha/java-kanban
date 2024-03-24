@@ -169,9 +169,8 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         } // Задача пересекается по времени с имеющимися задачами
 
-
         if (task.getStartTime() != null) prioritizedTasks.add(task);
-        tasks.put(task.getId(), task);
+        tasks.put(taskId, task);
     }
 
     @Override
@@ -292,9 +291,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
         Epic epicForDelete = epics.get(id);
         for (Integer subTaskId : epicForDelete.getSubTasks()) {
+            prioritizedTasks.remove(subTasks.get(subTaskId));
             subTasks.remove(subTaskId);
             historyManager.remove(subTaskId);
-            prioritizedTasks.remove(subTasks.get(subTaskId));
+
         }
         epics.remove(id);
         historyManager.remove(id);

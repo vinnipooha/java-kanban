@@ -2,6 +2,7 @@ package model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class SubTask extends Task {
@@ -30,7 +31,7 @@ public class SubTask extends Task {
     @Override
     public String toString() {
         return (getId() + "," + getType()+ "," + getName() + "," + status.getStatus() + "," + getDescription() + ","
-                + getStartTime().format(formatter) + "," + getDuration() + "," + epicId);
+                + getStartTime().format(DateTimeFormatter.ofPattern("dd_MM_yyy HH:mm")) + "," + getDuration() + "," + epicId);
     }
 
 
